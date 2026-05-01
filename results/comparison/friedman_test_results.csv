@@ -1,0 +1,4 @@
+classifier,num_seeds,friedman_statistic,friedman_p_value,significant_at_0_05
+Logistic Regression,5,0.35999999999999943,0.9483757589703068,False
+Random Forest,5,6.840000000000003,0.07717619445717358,False
+SVM,5,6.359999999999999,0.09535032301698126,False

@@ -1,0 +1,11 @@
+seed,ga_variant,selected_feature_indices,selected_feature_names,selected_feature_count
+42,vanilla_ga,"0,3,4,5,7,8,9,10,15",Area|MinorAxisLength|AspectRation|Eccentricity|EquivDiameter|Extent|Solidity|roundness|ShapeFactor4,9
+42,improved_ga,"4,7,8,9,10,12,13,15",AspectRation|EquivDiameter|Extent|Solidity|roundness|ShapeFactor1|ShapeFactor2|ShapeFactor4,8
+52,vanilla_ga,"3,8,9,10,11,12,13,15",MinorAxisLength|Extent|Solidity|roundness|Compactness|ShapeFactor1|ShapeFactor2|ShapeFactor4,8
+52,improved_ga,"0,3,6,8,9,10,11,15",Area|MinorAxisLength|ConvexArea|Extent|Solidity|roundness|Compactness|ShapeFactor4,8
+62,vanilla_ga,"1,3,4,5,8,9,10,12,15",Perimeter|MinorAxisLength|AspectRation|Eccentricity|Extent|Solidity|roundness|ShapeFactor1|ShapeFactor4,9
+62,improved_ga,"1,5,8,9,10,11,12,13,15",Perimeter|Eccentricity|Extent|Solidity|roundness|Compactness|ShapeFactor1|ShapeFactor2|ShapeFactor4,9
+72,vanilla_ga,"0,1,2,3,6,8,9,10,11,13,15",Area|Perimeter|MajorAxisLength|MinorAxisLength|ConvexArea|Extent|Solidity|roundness|Compactness|ShapeFactor2|ShapeFactor4,11
+72,improved_ga,"1,3,8,9,10,11,15",Perimeter|MinorAxisLength|Extent|Solidity|roundness|Compactness|ShapeFactor4,7
+82,vanilla_ga,"1,5,8,9,10,11,12,15",Perimeter|Eccentricity|Extent|Solidity|roundness|Compactness|ShapeFactor1|ShapeFactor4,8
+82,improved_ga,"1,4,5,8,9,10,12,14,15",Perimeter|AspectRation|Eccentricity|Extent|Solidity|roundness|ShapeFactor1|ShapeFactor3|ShapeFactor4,9

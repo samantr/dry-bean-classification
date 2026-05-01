@@ -1,0 +1,7 @@
+method,classifier,macro_f1,accuracy,total_time_seconds
+improved_ga,Logistic Regression,0.9323816,0.920382,74.67741579999999
+vanilla_ga,Logistic Regression,0.9324016,0.9204554,77.3289308
+improved_ga,Random Forest,0.9340814,0.9225118,81.644076
+vanilla_ga,Random Forest,0.933588,0.9220710000000001,84.8216184
+improved_ga,SVM,0.9381788,0.9264048,75.35139
+vanilla_ga,SVM,0.9375588,0.9255234,78.0509946
