@@ -1,4 +1,10 @@
 from pathlib import Path
+import argparse
+import hashlib
+import importlib.metadata
+import json
+import platform
+import subprocess
 import numpy as np
 import pandas as pd
 
@@ -107,12 +113,22 @@ def save_all_outputs(
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Corrected repeated-holdout experiment; never overwrites a run.")
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--seeds', type=int, nargs='+', default=[42, 52, 62, 72, 82])
+    parser.add_argument('--population', type=int, default=20)
+    parser.add_argument('--generations', type=int, default=10)
+    parser.add_argument('--skip-nca', action='store_true', help='Pilot only: omit expensive NCA')
+    args = parser.parse_args()
+    if len(set(args.seeds)) != len(args.seeds):
+        parser.error('Seeds must be unique')
     project_root = Path(__file__).resolve().parent.parent
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     DATA_DIR = PROJECT_ROOT / "data"
-    RESULTS_DIR = PROJECT_ROOT / "results" / "comparison"
+    RESULTS_DIR = args.output.resolve()
 
-    ensure_dir(str(RESULTS_DIR))
+    # Exclusive creation protects archived results and partial runs alike.
+    RESULTS_DIR.mkdir(parents=True, exist_ok=False)
 
     excel_files = list(DATA_DIR.glob("*.xlsx"))
     if not excel_files:
@@ -127,7 +143,23 @@ if __name__ == '__main__':
     print(f'Project root: {project_root}', flush=True)
     print(f'Results directory: {results_dir}', flush=True)
 
-    random_seeds = [42, 52, 62, 72, 82]
+    random_seeds = args.seeds
+    source_hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                     for p in sorted((PROJECT_ROOT / 'src').glob('*.py'))}
+    manifest = {
+        'protocol': 'fold_local_scaling_v1', 'status': 'running',
+        'seeds': random_seeds, 'population': args.population, 'generations': args.generations,
+        'skip_nca': args.skip_nca, 'test_fraction': 0.2, 'inner_folds': 3,
+        'dataset_sha256': hashlib.sha256(Path(file_path).read_bytes()).hexdigest(),
+        'source_sha256': source_hashes,
+        'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=PROJECT_ROOT, text=True).strip(),
+        'git_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=PROJECT_ROOT, text=True).strip()),
+        'python': platform.python_version(),
+        'packages': {name: importlib.metadata.version(name) for name in
+                     ['numpy', 'pandas', 'scipy', 'scikit-learn', 'deap', 'openpyxl']},
+        'timing_note': 'Model fit/predict plus selector cost; excludes shared loading/scaling. Not end-to-end deployment latency.'
+    }
+    (RESULTS_DIR / 'manifest.json').write_text(json.dumps(manifest, indent=2))
     ga_variants = ['vanilla_ga', 'improved_ga']
 
     long_results_rows = []
@@ -148,6 +180,10 @@ if __name__ == '__main__':
         )
 
         feature_names = list(X_train.columns)
+        (RESULTS_DIR / f'split_{seed}.json').write_text(json.dumps({
+            'train_indices': X_train.index.tolist(), 'test_indices': X_test.index.tolist(),
+            'classes': label_encoder.classes_.tolist(), 'features': feature_names,
+        }, indent=2))
         input_feature_count = len(feature_names)
 
         X_train_np = np.asarray(X_train)
@@ -182,11 +218,11 @@ if __name__ == '__main__':
         for ga_variant in ga_variants:
             print(f'\nStarting {ga_variant} ...', flush=True)
             ga_output = run_ga_feature_selection(
-                X_train_scaled=X_train_scaled_np,
+                X_train=X_train_np,
                 y_train=y_train,
                 random_state=seed,
-                population_size=20,
-                generations=10,
+                population_size=args.population,
+                generations=args.generations,
                 cxpb=0.8,
                 mutpb=0.1,
                 ga_variant=ga_variant,
@@ -199,7 +235,7 @@ if __name__ == '__main__':
             print(f'\n{ga_variant} Feature Selection Results:', flush=True)
             print('Selected feature indices:', selected_features, flush=True)
             print('Number of selected features:', len(selected_features), flush=True)
-            print(f"Best GA CV Macro-F1: {ga_output['best_score']:.4f}", flush=True)
+            print(f"Best penalized GA fitness: {ga_output['best_score']:.4f}", flush=True)
 
             X_train_ga = X_train_np[:, selected_features]
             X_test_ga = X_test_np[:, selected_features]
@@ -223,6 +259,7 @@ if __name__ == '__main__':
             extra_meta = {
                 'ga_variant': ga_variant,
                 'ga_best_cv_macro_f1': round(ga_meta['ga_best_cv_macro_f1'], 6),
+                'ga_best_penalized_fitness': round(ga_meta['ga_best_penalized_fitness'], 6),
                 'fitness_classifier': ga_meta['fitness_classifier'],
                 'fitness_metric': ga_meta['fitness_metric'],
                 'population_size': ga_meta['population_size'],
@@ -279,6 +316,8 @@ if __name__ == '__main__':
             )
             print(f'Saved partial results after {ga_variant} for seed {seed} to: {results_dir}', flush=True)
 
+        if args.skip_nca:
+            continue
         n_classes = len(np.unique(y_train))
         nca_components = n_classes - 1
         print(f'\nStarting NCA with n_components={nca_components} ...', flush=True)
@@ -350,6 +389,8 @@ if __name__ == '__main__':
         )
         print(f'Completed seed {seed}. Partial results safely saved to: {results_dir}', flush=True)
 
+    manifest['status'] = 'complete'
+    (RESULTS_DIR / 'manifest.json').write_text(json.dumps(manifest, indent=2))
     avg_df = outputs['avg_df']
 
     print('\n' + '=' * 90, flush=True)

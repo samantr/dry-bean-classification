@@ -1,6 +1,8 @@
 from pathlib import Path
 from itertools import combinations
+import argparse
 
+import numpy as np
 import pandas as pd
 from scipy.stats import friedmanchisquare, wilcoxon
 
@@ -24,11 +26,31 @@ def load_detailed_results(results_dir: Path) -> pd.DataFrame:
     missing = required_cols - set(df.columns)
     if missing:
         raise ValueError(f"Missing required columns in detailed_results_long.csv: {missing}")
+    validate_results(df)
 
     return df
 
 
+def validate_results(df):
+    if df.duplicated(['seed', 'method', 'classifier']).any():
+        raise ValueError('Duplicate seed/method/classifier rows; cannot silently average repeated runs')
+    if not np.isfinite(df['macro_f1']).all() or not df['macro_f1'].between(0, 1).all():
+        raise ValueError('macro_f1 must be finite and in [0, 1]')
+
+
+def holm_adjust(p_values):
+    """Holm family-wise correction for all planned finite pairwise tests."""
+    p = np.asarray(p_values, dtype=float)
+    if not np.isfinite(p).all() or ((p < 0) | (p > 1)).any():
+        raise ValueError('Expected finite p-values in [0, 1]')
+    order = np.argsort(p)
+    adjusted = np.empty(len(p))
+    adjusted[order] = np.minimum(1, np.maximum.accumulate(p[order] * np.arange(len(p), 0, -1)))
+    return adjusted
+
+
 def run_friedman_by_classifier(df: pd.DataFrame) -> pd.DataFrame:
+    validate_results(df)
     rows = []
 
     classifiers = sorted(df["classifier"].unique())
@@ -74,6 +96,7 @@ def run_friedman_by_classifier(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def run_pairwise_wilcoxon(df: pd.DataFrame) -> pd.DataFrame:
+    validate_results(df)
     rows = []
 
     classifiers = sorted(df["classifier"].unique())
@@ -128,7 +151,16 @@ def run_pairwise_wilcoxon(df: pd.DataFrame) -> pd.DataFrame:
                 "mean_difference_method1_minus_method2": (paired[m1] - paired[m2]).mean()
             })
 
-    return pd.DataFrame(rows)
+    result = pd.DataFrame(rows)
+    if not result.empty:
+        # One correction family across classifiers and method pairs, not a
+        # selectively chosen subset of comparisons. Retain raw p-values too.
+        valid = result['wilcoxon_p_value'].notna()
+        result['holm_p_value'] = np.nan
+        result.loc[valid, 'holm_p_value'] = holm_adjust(result.loc[valid, 'wilcoxon_p_value'])
+        result['significant_at_0_05'] = result['holm_p_value'] < 0.05
+        result['inference_scope'] = 'exploratory_repeated_holdout_not_independent_datasets'
+    return result
 
 
 def build_mean_std_table(df: pd.DataFrame) -> pd.DataFrame:
@@ -177,7 +209,12 @@ def print_pretty_summary(friedman_df: pd.DataFrame, wilcoxon_df: pd.DataFrame, s
 
 
 def main():
-    results_dir = get_results_dir()
+    parser = argparse.ArgumentParser(description='Exploratory paired analysis; overlapping splits are not independent datasets')
+    parser.add_argument('--results-dir', type=Path, required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args()
+    results_dir = args.results_dir
+    args.output.mkdir(parents=True, exist_ok=False)
     print(f"Using results directory: {results_dir}")
 
     df = load_detailed_results(results_dir)
@@ -186,16 +223,16 @@ def main():
     friedman_df = run_friedman_by_classifier(df)
     wilcoxon_df = run_pairwise_wilcoxon(df)
 
-    save_dataframe(summary_df, results_dir / "stat_summary_mean_std.csv")
-    save_dataframe(friedman_df, results_dir / "friedman_test_results.csv")
-    save_dataframe(wilcoxon_df, results_dir / "wilcoxon_pairwise_results.csv")
+    save_dataframe(summary_df, args.output / "stat_summary_mean_std.csv")
+    save_dataframe(friedman_df, args.output / "friedman_test_results.csv")
+    save_dataframe(wilcoxon_df, args.output / "wilcoxon_pairwise_results.csv")
 
     print_pretty_summary(friedman_df, wilcoxon_df, summary_df)
 
     print("\nSaved:")
-    print(results_dir / "stat_summary_mean_std.csv")
-    print(results_dir / "friedman_test_results.csv")
-    print(results_dir / "wilcoxon_pairwise_results.csv")
+    print(args.output / "stat_summary_mean_std.csv")
+    print(args.output / "friedman_test_results.csv")
+    print(args.output / "wilcoxon_pairwise_results.csv")
 
 
 if __name__ == "__main__":

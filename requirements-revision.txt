@@ -1,0 +1,9 @@
+# Direct dependencies tested in the phase-1 environment (Python 3.12).
+# This is not a complete transitive lock or the unknown original environment.
+numpy==2.3.5
+pandas==2.2.3
+scipy==1.17.0
+scikit-learn==1.8.0
+deap==1.4.4
+openpyxl==3.1.5
+pytest==9.1.1

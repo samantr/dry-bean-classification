@@ -7,6 +7,8 @@ from deap import algorithms, base, creator, tools
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score, make_scorer
 from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 
 
 
@@ -19,7 +21,7 @@ def _ensure_deap_creators():
 
 
 def _build_toolbox(
-    X_train_scaled,
+    X_train,
     y_train,
     random_state,
     n_features,
@@ -42,9 +44,10 @@ def _build_toolbox(
             return (0.0,)
 
         selected_indices = [i for i, bit in enumerate(individual) if bit == 1]
-        X_selected = X_train_scaled[:, selected_indices]
-        model = LogisticRegression(max_iter=5000, random_state=random_state)
-        scores = cross_val_score(model, X_selected, y_train, cv=cv, scoring=scorer, n_jobs=None)
+        X_selected = X_train[:, selected_indices]
+        # Fit preprocessing independently inside every inner training fold.
+        model = make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000, random_state=random_state))
+        scores = cross_val_score(model, X_selected, y_train, cv=cv, scoring=scorer, n_jobs=None, error_score="raise")
 
         score = float(scores.mean())
 
@@ -76,7 +79,7 @@ def _extract_logbook_rows(logbook, seed: int, ga_variant: str) -> List[Dict]:
 
 
 def run_ga_feature_selection(
-    X_train_scaled,
+    X_train,
     y_train,
     random_state=42,
     population_size=20,
@@ -86,13 +89,20 @@ def run_ga_feature_selection(
     ga_variant="improved_ga",
 ):
     """
-    Supported ga_variant values:
+    X_train must contain raw, unscaled OUTER-training features only.
+    Supported ga_variant values (legacy labels retained for traceability):
     - vanilla_ga
     - improved_ga
     """
-    X_train_scaled = np.asarray(X_train_scaled)
+    X_train = np.asarray(X_train)
     y_train = np.asarray(y_train)
-    n_features = X_train_scaled.shape[1]
+    if X_train.ndim != 2 or X_train.shape[0] != len(y_train):
+        raise ValueError("Expected a two-dimensional X_train aligned with y_train")
+    n_features = X_train.shape[1]
+    if n_features < 2 or population_size < 2 or generations < 0:
+        raise ValueError("Need >=2 features, >=2 individuals, and >=0 generations")
+    if not (0 <= cxpb <= 1 and 0 <= mutpb <= 1):
+        raise ValueError("Crossover and mutation probabilities must be in [0, 1]")
 
     random.seed(random_state)
     np.random.seed(random_state)
@@ -107,7 +117,7 @@ def run_ga_feature_selection(
         raise ValueError(f"Unsupported ga_variant: {ga_variant}")
 
     toolbox = _build_toolbox(
-        X_train_scaled=X_train_scaled,
+        X_train=X_train,
         y_train=y_train,
         random_state=random_state,
         n_features=n_features,
@@ -116,6 +126,9 @@ def run_ga_feature_selection(
     )
 
     population = toolbox.population(n=population_size)
+    # At least one valid chromosome is necessary even for tiny pilot searches.
+    if not any(sum(individual) for individual in population):
+        population[0][0] = 1
     hall_of_fame = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values[0])
     stats.register("avg", np.mean)
@@ -152,7 +165,8 @@ def run_ga_feature_selection(
         "input_feature_count": n_features,
         "selected_feature_count": len(selected_features),
         "feature_reduction_ratio": (n_features - len(selected_features)) / n_features,
-        "ga_best_cv_macro_f1": best_score,
+        "ga_best_cv_macro_f1": best_score + 0.001 * len(selected_features) / n_features,
+        "ga_best_penalized_fitness": best_score,
         "ga_runtime_seconds": ga_runtime_seconds,
     }
 
