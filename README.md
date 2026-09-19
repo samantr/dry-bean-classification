@@ -5,6 +5,29 @@ Classification Using Genetic Algorithms and Neighborhood Components Analysis*.
 
 ## Revision status
 
+Stage 2 adds equal-unique-evaluation random/GA comparisons, mutation-only and
+tournament-only ablations, MI/RFE fixed-size baselines and bounded PCA/NCA workers.
+See [the stage-2 protocol](docs/stage2-protocol.md) before interpreting its outputs.
+
+```sh
+python src/stage2.py --output results/revision_runs/stage2-validation
+# Resume completed units without rerunning them (same settings/code/environment):
+python src/stage2.py --output results/revision_runs/stage2-validation --resume
+```
+
+Defaults are development checks: seeds 42/52, budget 40, population 10, 90 seconds
+per unit and 30 seconds for NCA. Exit code 2 means at least one unit timed out or
+failed; inspect `unit-statuses.json` and per-unit logs. Such units have missing
+scores, not zeros. `--retry-failed --resume` retries failed units under identical
+settings and preserves prior attempt logs. A different runtime limit requires a
+new output directory. An abandoned `runner.lock` after a hard process crash must
+only be removed after confirming no other runner is using the directory.
+
+Outputs include verified per-unit predictions, split row IDs, selection traces,
+per-class metrics, a manifest, raw `metrics.csv`, and a `summary.csv` that shows
+the number of completed seeds even when a method has no scores. No significance
+claim should be made from this validation run.
+
 The `revision/evaluation-audit` branch corrects the evaluation foundation. It is
 not a completed new algorithm or a submission-ready manuscript. See
 [the audit and revision gates](docs/revision-audit.md).
