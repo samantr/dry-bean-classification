@@ -1,0 +1,19 @@
+classifier,method_1,method_2,num_seeds,wilcoxon_statistic,wilcoxon_p_value,significant_at_0_05,mean_macro_f1_method_1,mean_macro_f1_method_2,mean_difference_method1_minus_method2,holm_p_value,inference_scope
+Logistic Regression,baseline,vanilla_ga,5,3.0,0.3125,False,0.9318850000000001,0.9324016,-0.0005166000000000004,1.0,exploratory_repeated_holdout_not_independent_datasets
+Logistic Regression,baseline,improved_ga,5,4.0,0.4375,False,0.9318850000000001,0.9323816,-0.0004966000000000026,1.0,exploratory_repeated_holdout_not_independent_datasets
+Logistic Regression,baseline,nca,5,3.0,0.3125,False,0.9318850000000001,0.9332412000000001,-0.0013562000000000075,1.0,exploratory_repeated_holdout_not_independent_datasets
+Logistic Regression,vanilla_ga,improved_ga,5,7.0,1.0,False,0.9324016,0.9323816,1.9999999999997796e-05,1.0,exploratory_repeated_holdout_not_independent_datasets
+Logistic Regression,vanilla_ga,nca,5,3.0,0.3125,False,0.9324016,0.9332412000000001,-0.000839600000000007,1.0,exploratory_repeated_holdout_not_independent_datasets
+Logistic Regression,improved_ga,nca,5,6.0,0.8125,False,0.9323816,0.9332412000000001,-0.0008596000000000048,1.0,exploratory_repeated_holdout_not_independent_datasets
+Random Forest,baseline,vanilla_ga,5,1.0,0.125,False,0.9312184,0.933588,-0.0023695999999999496,1.0,exploratory_repeated_holdout_not_independent_datasets
+Random Forest,baseline,improved_ga,5,0.0,0.0625,False,0.9312184,0.9340814000000002,-0.002862999999999993,1.0,exploratory_repeated_holdout_not_independent_datasets
+Random Forest,baseline,nca,5,0.0,0.0625,False,0.9312184,0.9346604,-0.0034419999999999893,1.0,exploratory_repeated_holdout_not_independent_datasets
+Random Forest,vanilla_ga,improved_ga,5,6.0,0.8125,False,0.933588,0.9340814000000002,-0.0004934000000000438,1.0,exploratory_repeated_holdout_not_independent_datasets
+Random Forest,vanilla_ga,nca,5,6.0,0.8125,False,0.933588,0.9346604,-0.00107240000000004,1.0,exploratory_repeated_holdout_not_independent_datasets
+Random Forest,improved_ga,nca,5,6.0,0.8125,False,0.9340814000000002,0.9346604,-0.0005789999999999962,1.0,exploratory_repeated_holdout_not_independent_datasets
+SVM,baseline,vanilla_ga,5,3.0,0.3125,False,0.9366148000000001,0.9375588,-0.0009440000000000115,1.0,exploratory_repeated_holdout_not_independent_datasets
+SVM,baseline,improved_ga,5,2.0,0.1875,False,0.9366148000000001,0.9381787999999999,-0.0015639999999999654,1.0,exploratory_repeated_holdout_not_independent_datasets
+SVM,baseline,nca,5,1.0,0.125,False,0.9366148000000001,0.9351230000000001,0.0014917999999999986,1.0,exploratory_repeated_holdout_not_independent_datasets
+SVM,vanilla_ga,improved_ga,5,2.0,0.1875,False,0.9375588,0.9381787999999999,-0.0006199999999999539,1.0,exploratory_repeated_holdout_not_independent_datasets
+SVM,vanilla_ga,nca,5,0.0,0.0625,False,0.9375588,0.9351230000000001,0.00243580000000001,1.0,exploratory_repeated_holdout_not_independent_datasets
+SVM,improved_ga,nca,5,1.0,0.125,False,0.9381787999999999,0.9351230000000001,0.003055799999999964,1.0,exploratory_repeated_holdout_not_independent_datasets

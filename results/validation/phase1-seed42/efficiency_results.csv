@@ -1,0 +1,3 @@
+seed,method,ga_variant,fitness_classifier,fitness_metric,population_size,generations,cxpb,mutpb,mutation_indpb,tournament_size,input_feature_count,selected_feature_count,feature_reduction_ratio,ga_best_cv_macro_f1,ga_best_penalized_fitness,ga_runtime_seconds
+42,vanilla_ga,vanilla_ga,Logistic Regression,macro_f1_cv_3fold_with_subset_penalty,20,10,0.8,0.1,0.1,3,16,10,0.375,0.9364171834990245,0.9357921834990245,40.65762095199989
+42,improved_ga,improved_ga,Logistic Regression,macro_f1_cv_3fold_with_subset_penalty,20,10,0.8,0.1,0.2,5,16,7,0.5625,0.9370047650118641,0.9365672650118642,42.75129567199997

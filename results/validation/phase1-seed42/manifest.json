@@ -1,0 +1,37 @@
+{
+  "protocol": "fold_local_scaling_v1",
+  "status": "interrupted_during_nca",
+  "interruption_reason": "Operator stopped NCA after approximately eight minutes without completion; baseline and both original-budget GA configurations finished. No NCA scores are present.",
+  "seeds": [
+    42
+  ],
+  "population": 20,
+  "generations": 10,
+  "skip_nca": false,
+  "test_fraction": 0.2,
+  "inner_folds": 3,
+  "dataset_sha256": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714",
+  "source_sha256": {
+    "baseline_models.py": "66a6ddc1a76082c3cbb9af5a5ecc2dd572564dcaa5eb17d6729bcb29059c46bb",
+    "dimensionality_reduction.py": "d9297a8d07cca1845f395f8ba45fb95e133cfa81a47ecb397c0bbd6f5fb5c3cc",
+    "evaluation.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ga_feature_selection.py": "3f4396bf6e905ab63a2fc8d76622bb5fee481f1ee1830fd316230d40de222515",
+    "main.py": "d0b13ec3d2c29ce44d606fdfbda6a97a44ddbc994b35fc21e68a4cd90afbd010",
+    "preprocessing.py": "40bfb108273214920c7d213141ce5050ff14f5d06e095cfdf9fe7fee91b97b55",
+    "results_utils.py": "85f7fbc92165bcc5585982a3bf4a3864795ffa84cedcd6c4ca0f0fcc08ec1079",
+    "statistical_analysis.py": "ca01fdf92286fea1914676679be335f7569a36df2d299d8f96c84d53d67f2bc9",
+    "utils.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "git_commit": "fb21f3a622ec4bdcc562b1e8a95b5f2e126e21a4",
+  "git_dirty": false,
+  "python": "3.12.14",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "deap": "1.4.4",
+    "openpyxl": "3.1.5"
+  },
+  "timing_note": "Model fit/predict plus selector cost; excludes shared loading/scaling. Not end-to-end deployment latency."
+}

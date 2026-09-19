@@ -18,16 +18,25 @@ The revision preserves the original dataset, code in git history, and all
 | Weak provenance | No recorded versions, split indices, or data/code hashes | Add a run manifest and exact outer split indices |
 | 'Improved GA' novelty overstated | Only mutation and tournament parameters differ | Retain internal legacy label; revise the scientific claim |
 | Timing scope incomplete | Shared loading/scaling not timed | Label scope explicitly; full deployment timing remains pending |
+| Component count conflated with original-feature count | NCA maps 16 original inputs to 6 components | Keep dimensionality and required original measurements separate; do not claim NCA needs only 6 measurements |
+| 'Always' more compact is false | Archived seed 82 selects 8 vanilla vs 9 modified features | Claim lower mean subset size only; seed 62 also ties at 9 |
+| Feature frequency overinterpreted | Selection frequency is measured across only 5 runs with an LR fitness | Describe observed frequency, not proof of causal relevance or universal robustness |
 
 This is inner-validation leakage, not evidence that the outer test set was used
 to train the selector. Its numerical impact must be measured, not assumed.
 
 ## Verification performed
 
-- Eight automated tests passed in the initial phase-1 test suite.
+- Ten automated tests passed, including CLI overwrite and duplicate-seed guards.
 - Full Dry Bean data pilot completed with seed 42, population 6, generations 2,
   all three classifiers, both GA configurations, and no NCA.
 - Pilot scores are execution checks only; both GAs selected the same 9 features.
+- A separate original-budget seed-42 run completed the baseline and both GAs.
+  NCA was interrupted after approximately eight minutes without completion on
+  this machine. The run is explicitly incomplete, not a four-method replication.
+  The baseline/GA subset of its outputs is preserved in `results/validation/phase1-seed42/`.
+  The manifest records the exact source hashes and environment. Do not combine
+  these rows with the archived NCA scores to manufacture a complete comparison.
 - Archived five-seed statistics were recomputed without retraining. Across the
   18 pairwise comparisons, all Holm-adjusted p-values are 1.0.
 - Original raw CSVs already reproduce the paper's headline rounded mean scores.
@@ -45,12 +54,29 @@ to train the selector. Its numerical impact must be measured, not assumed.
    finite, but 3-fold evaluation already costs 196,605 model fits per outer split.
    Repeated splits and hyperparameter tuning multiply this cost. Benchmark first;
    an exhaustive reference is optional, not automatically inexpensive.
+   Corrected original-budget seed-42 GA timing: 40.66 s / 187 evaluations for
+   vanilla and 42.75 s / 188 evaluations for the modified configuration. A linear
+   extrapolation is about 4 hours per exhaustive split, not a measured exhaustive
+   runtime; subset composition, caching and hardware can change it substantially.
 4. A smaller subset does not prove cheaper image acquisition: the descriptors
    can share the same segmentation and geometric calculations. Actual savings
    require measurement or a justified feature-cost model.
 5. Failure to reject a difference is not proof of equivalence or noninferiority.
+   With five nonzero paired differences and the usual exact two-sided signed-rank
+   test, the smallest possible p-value is 2/32 = 0.0625. Consequently, this design
+   cannot achieve p < 0.05 with that exact test, even if all differences favor
+   one method. More seeds alone still do not resolve overlapping-split dependence.
 6. Numerical replication can differ because the original dependency versions
    were not recorded. Keep code-change effects distinct from environment effects.
+
+## Verified methodological reading
+
+Nogueira, Sechidis and Brown (2018), *On the Stability of Feature Selection
+Algorithms*, JMLR 18(174):1-54: https://jmlr.org/papers/v18/17-514.html.
+The paper distinguishes stability of selected features under resampling and
+algorithmic randomness and provides a formal framework for measuring it.
+Read and compare candidate extensions against this literature before claiming
+novelty; merely introducing the word 'stability' is not a methodological advance.
 
 ## Remaining work, in order
 

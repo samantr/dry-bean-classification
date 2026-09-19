@@ -1,0 +1,3 @@
+seed,ga_variant,selected_feature_indices,selected_feature_names,selected_feature_count
+42,vanilla_ga,"0,2,3,4,5,7,8,9,10,15",Area|MajorAxisLength|MinorAxisLength|AspectRation|Eccentricity|EquivDiameter|Extent|Solidity|roundness|ShapeFactor4,10
+42,improved_ga,"4,5,8,9,10,12,15",AspectRation|Eccentricity|Extent|Solidity|roundness|ShapeFactor1|ShapeFactor4,7
