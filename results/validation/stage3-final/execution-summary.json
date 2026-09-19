@@ -1,0 +1,12 @@
+{
+  "source_commit": "afab0d45a359ba5de7b798820d488a3698771e25",
+  "core_units": 180,
+  "core_states": {
+    "complete": 180
+  },
+  "nca_units": 20,
+  "nca_states": {
+    "complete": 20
+  },
+  "note": "Frozen Stage 3 protocol; core and NCA executed sequentially on one GitHub-hosted runner with numerical threads limited to one."
+}
