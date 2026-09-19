@@ -1,0 +1,180 @@
+[
+  {
+    "seed": 42,
+    "method": "baseline",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "4aaaa0edfec2b958fcb5200404b110d8a8dc8492d77e3b1f84750c5d56901ab1",
+    "elapsed_seconds": 9.13930433600001
+  },
+  {
+    "seed": 42,
+    "method": "random_search",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "b28c197aba032f0b7f72e8855c7f80437793d2d06a0a1b9e8c5f507b4ef0b7f8",
+    "elapsed_seconds": 13.500334065000004
+  },
+  {
+    "seed": 42,
+    "method": "ga_standard",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "452df0b6c34afcfc9cfd964689a77e9cab45d479cc645df22c699fbbba3dd8cd",
+    "elapsed_seconds": 12.998584776999962
+  },
+  {
+    "seed": 42,
+    "method": "ga_mutation_only",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "e1c89ee4fd0c3f6b87ad4b42656441c4ca39cc089ca213f14b964e79d1bc4ae2",
+    "elapsed_seconds": 14.25281488500002
+  },
+  {
+    "seed": 42,
+    "method": "ga_tournament_only",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "6f1786a53cafa55007c2308ccff6907298157b0c5564f34a246d05a9b43199e8",
+    "elapsed_seconds": 12.603758778000042
+  },
+  {
+    "seed": 42,
+    "method": "ga_both",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "657ca5386855661d77ccf5e4720a6689e29e70ae276ce678dbc586cedb3fd87a",
+    "elapsed_seconds": 14.052394647000028
+  },
+  {
+    "seed": 42,
+    "method": "mi8",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "37f644e1a6dd069216a766ae669a95de5ed63de9caab68ffb9584c0a1f743dab",
+    "elapsed_seconds": 6.381852988999981
+  },
+  {
+    "seed": 42,
+    "method": "rfe8",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "b8ffed2c77e3cbcd44692008af175cca20dc77b759c34418b90f83138f2d5a6c",
+    "elapsed_seconds": 7.033345548999989
+  },
+  {
+    "seed": 42,
+    "method": "pca6",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "cdedc608fa2c07bf462df89d622565143248c25bc12091996939e6bdf06beed3",
+    "elapsed_seconds": 6.180346880999991
+  },
+  {
+    "seed": 42,
+    "method": "nca6",
+    "state": "timeout",
+    "attempt": 1,
+    "timeout_seconds": 30,
+    "elapsed_seconds": 30.008626606999997
+  },
+  {
+    "seed": 52,
+    "method": "baseline",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "da3bd517171a781f3a3991164994983a7da8752267f69c7f8fa0f82ff27893fc",
+    "elapsed_seconds": 8.98963983200008
+  },
+  {
+    "seed": 52,
+    "method": "random_search",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "57c06a5b58a77e185966c5975f1b3f7aba89d0e782062993c4550c595c74a596",
+    "elapsed_seconds": 14.30452166300006
+  },
+  {
+    "seed": 52,
+    "method": "ga_standard",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "5d8ec5439677e5553576a66f53a413701898f653561251316d165e9f400b6a6c",
+    "elapsed_seconds": 12.80225669899994
+  },
+  {
+    "seed": 52,
+    "method": "ga_mutation_only",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "88d08a36921a4096525c800c35540e027509d1fc665cc6cd36bbe7d12b7faef6",
+    "elapsed_seconds": 14.153135090999967
+  },
+  {
+    "seed": 52,
+    "method": "ga_tournament_only",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "663bcf9a26d7c3eb8a4a1ae8c94952a5810ef74a31311f8552c2e9302792e957",
+    "elapsed_seconds": 14.755551094999987
+  },
+  {
+    "seed": 52,
+    "method": "ga_both",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "a2e9514f12ba5f498ef6e1fd264c06a21e2c16613368dfc45af8679b8e830a4a",
+    "elapsed_seconds": 14.603193053000041
+  },
+  {
+    "seed": 52,
+    "method": "mi8",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "b2fcbaf837621517bebd6ab3c12094832da7a677e3652ce684bab5be313c55f4",
+    "elapsed_seconds": 6.332988969999974
+  },
+  {
+    "seed": 52,
+    "method": "rfe8",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "144bf14a9474c5bab056bb4da27bbec2a4c081a956c55ad63766b8574ef1e62c",
+    "elapsed_seconds": 6.934391898000058
+  },
+  {
+    "seed": 52,
+    "method": "pca6",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 90,
+    "result_sha256": "b146757c6f3ad85576968f919fbcfb84b89dbc190ebfb1841b0a2050949c90eb",
+    "elapsed_seconds": 6.132095522999975
+  },
+  {
+    "seed": 52,
+    "method": "nca6",
+    "state": "timeout",
+    "attempt": 1,
+    "timeout_seconds": 30,
+    "elapsed_seconds": 30.00765894899996
+  }
+]
