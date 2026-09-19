@@ -1,0 +1,48 @@
+{
+  "identity": {
+    "protocol": "stage2_v1",
+    "config": {
+      "dataset": "/workspace/scratch/88c58b1b1434/dry-bean-classification/data/Dry_Bean_Dataset.xlsx",
+      "seeds": [
+        42
+      ],
+      "methods": [
+        "nca6"
+      ],
+      "budget": 200,
+      "population": 20,
+      "unit_timeout": 600.0,
+      "nca_timeout": 600.0
+    },
+    "dataset_sha256": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714",
+    "source_sha256": {
+      "baseline_models.py": "66a6ddc1a76082c3cbb9af5a5ecc2dd572564dcaa5eb17d6729bcb29059c46bb",
+      "budgeted_search.py": "daaa7347298c074df3699a3acab89d57320f8a8e21a40b50e298e6322cf4e381",
+      "dimensionality_reduction.py": "d9297a8d07cca1845f395f8ba45fb95e133cfa81a47ecb397c0bbd6f5fb5c3cc",
+      "evaluation.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ga_feature_selection.py": "3f4396bf6e905ab63a2fc8d76622bb5fee481f1ee1830fd316230d40de222515",
+      "main.py": "d0b13ec3d2c29ce44d606fdfbda6a97a44ddbc994b35fc21e68a4cd90afbd010",
+      "preprocessing.py": "40bfb108273214920c7d213141ce5050ff14f5d06e095cfdf9fe7fee91b97b55",
+      "results_utils.py": "85f7fbc92165bcc5585982a3bf4a3864795ffa84cedcd6c4ca0f0fcc08ec1079",
+      "stage2.py": "4653f563be8d99be3dcf76db12a43b12d9744b166e87bfb1ee57fbb4e192058e",
+      "statistical_analysis.py": "ca01fdf92286fea1914676679be335f7569a36df2d299d8f96c84d53d67f2bc9",
+      "utils.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "python": "3.12.14",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "packages": {
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "scipy": "1.17.0",
+      "scikit-learn": "1.8.0",
+      "openpyxl": "3.1.5"
+    },
+    "thread_environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    }
+  },
+  "state": "complete"
+}

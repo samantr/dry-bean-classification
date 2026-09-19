@@ -5,6 +5,13 @@ Classification Using Genetic Algorithms and Neighborhood Components Analysis*.
 
 ## Revision status
 
+Stage 3 has a [frozen comparison and analysis plan](docs/stage3-protocol.md).
+`python scripts/run_stage3.py --output results/revision_runs/stage3-core` runs
+20 paired seeds at 200 unique evaluations per search. NCA runs separately with
+`--suite nca`. These are long-running experiments; resumable commands and honest
+interpretation boundaries are documented in the protocol. Preparation is not
+evidence that the full study has completed.
+
 Stage 2 adds equal-unique-evaluation random/GA comparisons, mutation-only and
 tournament-only ablations, MI/RFE fixed-size baselines and bounded PCA/NCA workers.
 See [the stage-2 protocol](docs/stage2-protocol.md) before interpreting its outputs.

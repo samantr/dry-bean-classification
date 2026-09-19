@@ -1,0 +1,11 @@
+[
+  {
+    "seed": 42,
+    "method": "nca6",
+    "state": "complete",
+    "attempt": 1,
+    "timeout_seconds": 600.0,
+    "result_sha256": "e163467060e07043320bd86649c809b3bf9f32065227d547cf7ce638dccca3f1",
+    "elapsed_seconds": 157.63733605900006
+  }
+]

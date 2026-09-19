@@ -1,0 +1,13 @@
+{
+  "dataset": "/workspace/scratch/88c58b1b1434/dry-bean-classification/data/Dry_Bean_Dataset.xlsx",
+  "seeds": [
+    42
+  ],
+  "methods": [
+    "nca6"
+  ],
+  "budget": 200,
+  "population": 20,
+  "unit_timeout": 600.0,
+  "nca_timeout": 600.0
+}

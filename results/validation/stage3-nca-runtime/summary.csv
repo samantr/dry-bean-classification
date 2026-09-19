@@ -1,0 +1,4 @@
+method,classifier,completed_seeds,requested_seeds,mean_macro_f1,std_macro_f1,mean_original_inputs,mean_output_dimensions
+nca6,Logistic Regression,1,1,0.9330162997651144,,16,6
+nca6,Random Forest,1,1,0.9352110745885709,,16,6
+nca6,SVM,1,1,0.9352387303767438,,16,6
