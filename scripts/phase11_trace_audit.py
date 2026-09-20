@@ -164,6 +164,10 @@ def main() -> int:
     X = features.to_numpy(dtype=float)
     encoder = LabelEncoder()
     y = encoder.fit_transform(frame["Class"])
+    class_distribution = {
+        str(label): int(count)
+        for label, count in frame["Class"].value_counts().sort_index().items()
+    }
     if X.shape != (13611, 16):
         failures.append(f"unexpected dataset feature shape {X.shape}")
     if len(np.unique(y)) != 7:
@@ -443,6 +447,13 @@ def main() -> int:
             "result_units": all_units,
             "search_units": search_units,
             "method_counts": dict(sorted(method_counts.items())),
+        },
+        "dataset_profile": {
+            "rows": int(X.shape[0]),
+            "input_features": int(X.shape[1]),
+            "classes": int(len(np.unique(y))),
+            "class_distribution": class_distribution,
+            "feature_names": features.columns.tolist(),
         },
         "frozen_identity": {
             "source_commit_expected": args.source_commit,
