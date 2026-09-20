@@ -1,0 +1,85 @@
+name: Phase 11 Regret Attainment
+
+on:
+  push:
+    branches:
+      - revision/search-behaviour-exact-reference
+    paths:
+      - scripts/phase11_regret_attainment.py
+      - .github/workflows/phase11-regret-attainment.yml
+      - results/validation/phase11-checkpoint-frontier/checkpoint_outer_results.csv
+      - results/validation/phase11-exact-reference/exact_optima.csv
+      - results/validation/phase11-exact-reference/best_by_cardinality_all.csv
+      - results/validation/stage3-final/checkpoints.tar.gz
+      - src/baseline_models.py
+      - src/budgeted_search.py
+      - data/Dry_Bean_Dataset.xlsx
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen scientific dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            numpy==2.3.5 \
+            pandas==2.2.3 \
+            scipy==1.17.0 \
+            scikit-learn==1.8.0 \
+            openpyxl==3.1.5
+
+      - name: Run exact regret and attainment analysis
+        id: analysis
+        shell: bash
+        run: |
+          set +e
+          rm -rf results/validation/phase11-regret-attainment
+          python scripts/phase11_regret_attainment.py \
+            --dataset data/Dry_Bean_Dataset.xlsx \
+            --archive results/validation/stage3-final/checkpoints.tar.gz \
+            --checkpoint-results results/validation/phase11-checkpoint-frontier/checkpoint_outer_results.csv \
+            --exact-optima results/validation/phase11-exact-reference/exact_optima.csv \
+            --exact-cardinality results/validation/phase11-exact-reference/best_by_cardinality_all.csv \
+            --output-dir results/validation/phase11-regret-attainment
+          code=$?
+          echo "$code" > results/validation/phase11-regret-attainment/analysis_exit_code.txt
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          cat results/validation/phase11-regret-attainment/REGRET_ATTAINMENT_REPORT.md
+          exit 0
+
+      - name: Commit verified Work Package F evidence
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin revision/search-behaviour-exact-reference
+          git add results/validation/phase11-regret-attainment
+          if git diff --cached --quiet; then
+            echo "No Work Package F evidence changes to commit."
+          else
+            git commit -m "phase11: archive regret and attainment evidence"
+            git push
+          fi
+
+      - name: Fail workflow if validation failed
+        if: steps.analysis.outputs.exit_code != '0'
+        run: exit 1
