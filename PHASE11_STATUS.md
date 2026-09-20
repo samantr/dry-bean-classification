@@ -148,6 +148,17 @@ These are wording/provenance defects, not numerical-result failures. They must b
 - GA-vs-random summaries: paired by outer seed and budget; lower regret is a win, absolute paired difference <= `1e-12` is a tie.
 - Repeated holdouts remain dependent; summaries are descriptive and will not be treated as independent datasets.
 
+
+
+## Work package F result and Work package G classification
+- GitHub Actions run `35525796410` — Phase 11 Regret Attainment: **SUCCESS**; validation failures: none.
+- At budget 200, mean exact-objective regret is 0.0006632 for random search versus 0.0002305 (GA standard), 0.0002325 (mutation-only), 0.0001450 (tournament-only), and 0.0002238 (both).
+- At budget 200, lower regret versus random occurs on 20/20 splits for GA standard, 19/20 for mutation-only, 20/20 for tournament-only, and 18/20 for both.
+- Exact-optimum attainment at budget 200: random 0/20; GA standard 4/20; mutation-only 1/20; tournament-only 6/20; both 4/20.
+- All GA variants are within 0.001 exact-objective regret on 20/20 splits at budget 200; random search is within 0.001 on 17/20.
+- Work package G classification: **Outcome 3 for the frozen search objective**. GA more consistently reduces regret under the tested budgets, especially tournament-only selection. However, downstream outer-test predictive differences remain small and classifier-dependent.
+- The manuscript must therefore emphasize search efficiency / proximity to the exact frozen objective, not a large predictive-performance gain or general superiority of GA.
+
 ## Missing or unresolved
 - Work packages C/D checkpoint and frontier outputs do not yet exist.
 - Full exact-reference enumeration has not yet been launched.
