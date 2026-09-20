@@ -1,0 +1,31 @@
+{
+  "child_cpu_seconds": 343.83664899999997,
+  "effective_child_cpu_percent": 394.8229907017228,
+  "environment": {
+    "logical_cpu_count": 4,
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "scikit_learn": "1.8.0",
+    "thread_environment": {
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "failures": [],
+  "masks": 1000,
+  "max_abs_difference_vs_serial": 0.0,
+  "parallel_validation_passed": true,
+  "phase": 11,
+  "projected_aggregate_runner_hours_20_splits": 31.70666253948141,
+  "projected_parallel_wall_hours_per_split": 1.5853331269740705,
+  "seconds_per_mask_wall": 0.08708627843299999,
+  "seed": 1001,
+  "wall_seconds": 87.08627843299999,
+  "warning_counts": {},
+  "work_package": "B",
+  "workers": 4
+}
