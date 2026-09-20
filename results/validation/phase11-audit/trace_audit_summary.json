@@ -32,6 +32,38 @@
     "same_outer_split_across_methods_within_seed": true,
     "source_hashes_match_manifest": true
   },
+  "dataset_profile": {
+    "class_distribution": {
+      "BARBUNYA": 1322,
+      "BOMBAY": 522,
+      "CALI": 1630,
+      "DERMASON": 3546,
+      "HOROZ": 1928,
+      "SEKER": 2027,
+      "SIRA": 2636
+    },
+    "classes": 7,
+    "feature_names": [
+      "Area",
+      "Perimeter",
+      "MajorAxisLength",
+      "MinorAxisLength",
+      "AspectRation",
+      "Eccentricity",
+      "ConvexArea",
+      "EquivDiameter",
+      "Extent",
+      "Solidity",
+      "roundness",
+      "Compactness",
+      "ShapeFactor1",
+      "ShapeFactor2",
+      "ShapeFactor3",
+      "ShapeFactor4"
+    ],
+    "input_features": 16,
+    "rows": 13611
+  },
   "failures": [],
   "frozen_identity": {
     "dataset_sha256_actual": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714",
