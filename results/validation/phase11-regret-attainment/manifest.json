@@ -1,0 +1,53 @@
+{
+  "budgets": [
+    20,
+    50,
+    100,
+    150,
+    200
+  ],
+  "checkpoint_archive_sha256": "89d34ac8c590c1e52c2f1d93bc4a1061c421c91ea178d48ace1b8c06cb3a921f",
+  "checkpoint_results_sha256": "362278348c617bb7491f5da77cc07e28702d2201d3e50854798a81f306839040",
+  "dataset_sha256": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714",
+  "exact_attainment_atol": 1e-12,
+  "exact_cardinality_sha256": "cb9ab93bc71f9359fbf5d198dbde16e9b6a8ddd506df6438e72fcf959a819449",
+  "exact_optima_sha256": "ad661f9dde380e4015d47cd698854469bf139c2f3612b38797552983ba1876c7",
+  "methods": [
+    "random_search",
+    "ga_standard",
+    "ga_mutation_only",
+    "ga_tournament_only",
+    "ga_both"
+  ],
+  "near_optimum_regret_thresholds": [
+    0.001,
+    0.005
+  ],
+  "outer_test_used_for_exact_selection": false,
+  "phase": 11,
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020
+  ],
+  "state": "complete",
+  "validation_failures": [],
+  "work_package": "F"
+}
