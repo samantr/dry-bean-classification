@@ -12,9 +12,11 @@ Updated: 2026-09-20 16:27 TRT
 Phase 11 — Search Behaviour and Exact Reference Extension
 
 ## Current work package
-**Work package A: Trace and provenance audit — COMPLETE**
+**Work package B: Exhaustive-search feasibility benchmark — COMPLETE**
 
-**Gate A: PASSED.** Ordered evaluation identity, mask identity, archived fitness, outer-split identity, deterministically reconstructed inner-fold identity, method identity, and final selected mask are recoverable for every analyzed search trace. Phase-11 checkpoint/frontier work may proceed without rerunning frozen Stage 3.
+**Gate A: PASSED.** Ordered evaluation identity, mask identity, archived fitness, outer-split identity, deterministically reconstructed inner-fold identity, method identity, and final selected mask are recoverable for every analyzed search trace.
+
+**Gate B: PASSED.** Exact-score reproduction, bit mapping, serial and safe 4-process benchmarks, disk estimate, and atomic resume strategy are all recorded. Full exact enumeration is now scientifically authorized by the Phase-11 protocol; it has not yet been launched at the time of this status entry.
 
 ## Repository state
 - Repository: `samantr/dry-bean-classification`
@@ -113,11 +115,24 @@ These are wording/provenance defects, not numerical-result failures. They must b
 10. Extended the audit to record the frozen dataset profile and reran it successfully.
 11. Built the manuscript claim-to-evidence map.
 
+
+
+## Work package B evidence and decision
+- GitHub Actions run `35512547614` — Phase 11 Exhaustive Feasibility Benchmark: **SUCCESS**.
+- GitHub Actions run `35512856869` — Phase 11 Parallel Exact Benchmark: **SUCCESS**.
+- Recomputed 25 archived Stage-3 masks with maximum absolute CV macro-F1 difference `0.000e+00` and fitness difference `0.000e+00`.
+- Validated all 16 single-feature masks and the full-feature mask; bit-to-feature mapping round trip passed.
+- Serial benchmark: 1,000 uncached masks in 239.53 s; projected 4.36 h per split and 87.21 h for all 20 splits.
+- Safe 4-process benchmark: 1,000 masks in 87.09 s with maximum absolute difference versus serial `0.000e+00`; projected 1.59 h per split and 31.71 aggregate runner-hours for 20 splits.
+- Compact scientific CSV projection: about 6.5 MiB per split and 129.2 MiB for all 20 splits, before logs/manifests.
+- Resume strategy: deterministic contiguous mask partitions, temporary writes followed by validation and atomic rename; a split is exact only if masks 1..65,535 are complete, unique, finite, and failure-free.
+- Decision: Gate B passes. Use GitHub Actions for the exact runs, preserve per-mask outputs as workflow artifacts, and commit only compact summaries/manifests/hashes unless repository-size policy is explicitly changed.
+
 ## Missing or unresolved
-- Gate B exhaustive-search feasibility has not yet been benchmarked.
-- Phase-11 checkpoint, frontier, and exact-reference outputs do not yet exist.
+- Work packages C/D checkpoint and frontier outputs do not yet exist.
+- Full exact-reference enumeration has not yet been launched.
 - Current manuscript wording defects identified above are intentionally not edited until the new Phase-11 evidence is frozen.
 - Journal formatting/policy issues from the handoff remain separate later-stage tasks.
 
 ## Next action
-Begin **Work package B: Exhaustive-search feasibility benchmark** on GitHub Actions. First implement an exact enumerator that reuses the frozen `SubsetEvaluator` scoring path, validate it against archived Stage-3 masks/scores and bit ordering, then benchmark 500–1,000 uncached masks on one frozen split. Do **not** launch full 20-split enumeration until Gate B records exact-score reproduction, projected runtime/disk cost, and a resume strategy.
+Begin **Work packages C/D** from the frozen Stage-3 traces and launch **Work package E exact enumeration** on GitHub Actions using the Gate-B-validated 4-process scoring path. Keep all selection and frontier construction training-only. Store heavy per-mask exact outputs as Actions artifacts and commit compact summaries, manifests, and hashes.
