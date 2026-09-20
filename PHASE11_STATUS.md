@@ -12,11 +12,11 @@ Updated: 2026-09-20 16:27 TRT
 Phase 11 — Search Behaviour and Exact Reference Extension
 
 ## Current work package
-**Work package B: Exhaustive-search feasibility benchmark — COMPLETE**
+**Work packages C/D: checkpoint + frontier analysis — RUNNING on GitHub Actions**\n\n**Work package E: exact-reference enumeration — RUNNING on GitHub Actions**
 
 **Gate A: PASSED.** Ordered evaluation identity, mask identity, archived fitness, outer-split identity, deterministically reconstructed inner-fold identity, method identity, and final selected mask are recoverable for every analyzed search trace.
 
-**Gate B: PASSED.** Exact-score reproduction, bit mapping, serial and safe 4-process benchmarks, disk estimate, and atomic resume strategy are all recorded. Full exact enumeration is now scientifically authorized by the Phase-11 protocol; it has not yet been launched at the time of this status entry.
+**Gate B: PASSED.** Exact-score reproduction, bit mapping, serial and safe 4-process benchmarks, disk estimate, and atomic resume strategy are all recorded. Full exact enumeration is scientifically authorized and has now been launched.
 
 ## Repository state
 - Repository: `samantr/dry-bean-classification`
@@ -127,6 +127,13 @@ These are wording/provenance defects, not numerical-result failures. They must b
 - Compact scientific CSV projection: about 6.5 MiB per split and 129.2 MiB for all 20 splits, before logs/manifests.
 - Resume strategy: deterministic contiguous mask partitions, temporary writes followed by validation and atomic rename; a split is exact only if masks 1..65,535 are complete, unique, finite, and failure-free.
 - Decision: Gate B passes. Use GitHub Actions for the exact runs, preserve per-mask outputs as workflow artifacts, and commit only compact summaries/manifests/hashes unless repository-size policy is explicitly changed.
+
+
+
+## Active GitHub Actions runs
+- Run `35513927921` — **Phase 11 Exact Enumeration**: queued/launched from commit `3d8963bf0801d5a1e7c84613362c463c74d1bb69`. Matrix covers frozen seeds 1001–1020; each split enumerates all 65,535 nonempty masks with the Gate-B-validated 4-process path. Per-mask archives are retained as Actions artifacts; compact exact summaries/hashes are committed only after all 20 splits validate.
+- Run `35514011863` — **Phase 11 Checkpoint Frontier**: queued/launched from commit `c1a5b9ba98fcf3501b5be76bf9f97f251600df69`. It reconstructs checkpoints at 20/50/100/150/200 evaluations, performs post-selection outer evaluation with LR/RF/RBF-SVM, validates budget-200 reproduction against frozen Stage 3, and builds training-only performance-cardinality frontier summaries.
+- Fixed descriptive frontier tolerances were frozen before this comparative run at absolute inner macro-F1 drops of `0.001` and `0.005`. Hypervolume is not used.
 
 ## Missing or unresolved
 - Work packages C/D checkpoint and frontier outputs do not yet exist.
