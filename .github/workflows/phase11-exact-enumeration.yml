@@ -1,0 +1,129 @@
+name: Phase 11 Exact Enumeration
+
+on:
+  push:
+    branches:
+      - revision/search-behaviour-exact-reference
+    paths:
+      - scripts/phase11_exact_enumeration.py
+      - scripts/phase11_exact_aggregate.py
+      - .github/workflows/phase11-exact-enumeration.yml
+      - src/budgeted_search.py
+      - data/Dry_Bean_Dataset.xlsx
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  enumerate:
+    name: Exact split ${{ matrix.seed }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        seed: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020]
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen scientific dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            numpy==2.3.5 \
+            pandas==2.2.3 \
+            scipy==1.17.0 \
+            scikit-learn==1.8.0 \
+            openpyxl==3.1.5
+
+      - name: Enumerate exact objective for frozen split
+        id: exact
+        shell: bash
+        run: |
+          set +e
+          out="phase11-exact-seed-${{ matrix.seed }}"
+          python scripts/phase11_exact_enumeration.py \
+            --dataset data/Dry_Bean_Dataset.xlsx \
+            --output-dir "$out" \
+            --seed "${{ matrix.seed }}" \
+            --workers 4 \
+            --partition-size 4096
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload exact split archive
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase11-exact-seed-${{ matrix.seed }}
+          path: phase11-exact-seed-${{ matrix.seed }}/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+      - name: Fail split if enumeration failed
+        if: steps.exact.outputs.exit_code != '0'
+        run: exit 1
+
+  aggregate:
+    name: Aggregate exact-reference evidence
+    needs: enumerate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download per-seed exact artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: phase11-exact-seed-*
+          path: downloaded-exact
+          merge-multiple: false
+
+      - name: Build compact exact-reference index
+        run: |
+          rm -rf exact-summary
+          python scripts/phase11_exact_aggregate.py \
+            --artifacts-root downloaded-exact \
+            --output-dir exact-summary \
+            --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT"
+          cat exact-summary/EXACT_REFERENCE_REPORT.md
+
+      - name: Commit compact exact-reference evidence
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin revision/search-behaviour-exact-reference
+          rm -rf results/validation/phase11-exact-reference
+          mkdir -p results/validation/phase11-exact-reference
+          cp -a exact-summary/. results/validation/phase11-exact-reference/
+          git add results/validation/phase11-exact-reference
+          if git diff --cached --quiet; then
+            echo "No compact exact-reference changes to commit."
+          else
+            git commit -m "phase11: archive complete exact-reference summaries"
+            git push
+          fi
