@@ -16,7 +16,7 @@ Phase 11 — Search Behaviour and Exact Reference Extension
 
 **Gate A: PASSED.** Ordered evaluation identity, mask identity, archived fitness, outer-split identity, deterministically reconstructed inner-fold identity, method identity, and final selected mask are recoverable for every analyzed search trace.
 
-**Gate B: PASSED.** Exact-score reproduction, bit mapping, serial and safe 4-process benchmarks, disk estimate, and atomic resume strategy are all recorded. Full exact enumeration is scientifically authorized and has now been launched.
+**Gate B: PASSED.** Exact-score reproduction, bit mapping, serial and safe 4-process benchmarks, disk estimate, and atomic resume strategy are all recorded. Full exact enumeration completed successfully across all 20 frozen splits.
 
 ## Repository state
 - Repository: `samantr/dry-bean-classification`
@@ -130,10 +130,23 @@ These are wording/provenance defects, not numerical-result failures. They must b
 
 
 
-## Active GitHub Actions runs
-- Run `35513927921` — **Phase 11 Exact Enumeration**: queued/launched from commit `3d8963bf0801d5a1e7c84613362c463c74d1bb69`. Matrix covers frozen seeds 1001–1020; each split enumerates all 65,535 nonempty masks with the Gate-B-validated 4-process path. Per-mask archives are retained as Actions artifacts; compact exact summaries/hashes are committed only after all 20 splits validate.
-- Run `35514011863` — **Phase 11 Checkpoint Frontier**: queued/launched from commit `c1a5b9ba98fcf3501b5be76bf9f97f251600df69`. It reconstructs checkpoints at 20/50/100/150/200 evaluations, performs post-selection outer evaluation with LR/RF/RBF-SVM, validates budget-200 reproduction against frozen Stage 3, and builds training-only performance-cardinality frontier summaries.
-- Fixed descriptive frontier tolerances were frozen before this comparative run at absolute inner macro-F1 drops of `0.001` and `0.005`. Hypervolume is not used.
+
+
+
+## Completed C/D/E runs
+- Run `35514011863` — Phase 11 Checkpoint Frontier: **SUCCESS**. Validation failures: none. Budget-200 outer metrics/predictions reproduce frozen Stage 3.
+- Run `35513927921` — Phase 11 Exact Enumeration: **SUCCESS**. All 20 seed jobs and the aggregate job succeeded.
+- Exact coverage: 20/20 splits × 65,535 nonempty masks = 1,310,700 subset objectives and 3,932,100 inner logistic-regression fits.
+- Outer test data used during exact search: **NO**.
+- All 20 per-seed heavy archives are retained as GitHub Actions artifacts; compact optima/cardinality summaries and artifact hashes are committed at `results/validation/phase11-exact-reference/`.
+
+## Work package F definitions frozen before F computation
+- Exact-optimum attainment tolerance: absolute objective regret <= `1e-12`.
+- Descriptive near-optimum regret thresholds: `0.001` and `0.005`. These values are inherited from the already-frozen Phase-11 absolute score tolerances used in Work Package D; no new threshold will be tuned after the regret results are computed.
+- Objective regret: exact optimal frozen fitness minus checkpoint best frozen fitness.
+- Matched-cardinality inner macro-F1 regret: exact best inner macro-F1 at the selected cardinality minus checkpoint inner macro-F1.
+- GA-vs-random summaries: paired by outer seed and budget; lower regret is a win, absolute paired difference <= `1e-12` is a tie.
+- Repeated holdouts remain dependent; summaries are descriptive and will not be treated as independent datasets.
 
 ## Missing or unresolved
 - Work packages C/D checkpoint and frontier outputs do not yet exist.
