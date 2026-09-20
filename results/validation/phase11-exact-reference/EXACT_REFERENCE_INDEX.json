@@ -1,0 +1,14 @@
+{
+  "budgeted_search_sha256": "daaa7347298c074df3699a3acab89d57320f8a8e21a40b50e298e6322cf4e381",
+  "dataset_sha256": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714",
+  "exact_splits": 20,
+  "github_actions_run_attempt": "1",
+  "github_actions_run_id": "35513927921",
+  "masks_per_split": 65535,
+  "phase": 11,
+  "state": "complete",
+  "storage_policy": "Per-mask archives retained as GitHub Actions artifacts; repository stores compact summaries, manifests/hashes only.",
+  "total_inner_model_fits": 3932100,
+  "total_subset_objectives": 1310700,
+  "work_package": "E"
+}
