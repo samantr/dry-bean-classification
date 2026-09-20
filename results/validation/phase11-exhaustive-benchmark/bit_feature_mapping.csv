@@ -1,0 +1,17 @@
+bit,mask,feature_index,feature_name,roundtrip_ok
+0,1,0,Area,True
+1,2,1,Perimeter,True
+2,4,2,MajorAxisLength,True
+3,8,3,MinorAxisLength,True
+4,16,4,AspectRation,True
+5,32,5,Eccentricity,True
+6,64,6,ConvexArea,True
+7,128,7,EquivDiameter,True
+8,256,8,Extent,True
+9,512,9,Solidity,True
+10,1024,10,roundness,True
+11,2048,11,Compactness,True
+12,4096,12,ShapeFactor1,True
+13,8192,13,ShapeFactor2,True
+14,16384,14,ShapeFactor3,True
+15,32768,15,ShapeFactor4,True

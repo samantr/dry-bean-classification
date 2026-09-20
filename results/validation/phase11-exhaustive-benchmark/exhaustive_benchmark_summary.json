@@ -1,0 +1,118 @@
+{
+  "archive_method_for_reproduction": "random_search",
+  "benchmark": {
+    "cardinality_distribution": {
+      "2": 2,
+      "3": 6,
+      "4": 39,
+      "5": 76,
+      "6": 118,
+      "7": 189,
+      "8": 164,
+      "9": 175,
+      "10": 132,
+      "11": 65,
+      "12": 26,
+      "13": 5,
+      "14": 2,
+      "15": 1
+    },
+    "cpu_seconds": 239.495747,
+    "cpu_seconds_per_mask": 0.23949574699999998,
+    "effective_single_process_cpu_percent": 99.98569301522312,
+    "seconds_per_mask": 0.23953001652300002,
+    "uncached_masks": 1000,
+    "wall_seconds": 239.53001652300003,
+    "warmup_masks": 32,
+    "warning_counts": {}
+  },
+  "benchmark_seed": 1001,
+  "dataset": {
+    "feature_names": [
+      "Area",
+      "Perimeter",
+      "MajorAxisLength",
+      "MinorAxisLength",
+      "AspectRation",
+      "Eccentricity",
+      "ConvexArea",
+      "EquivDiameter",
+      "Extent",
+      "Solidity",
+      "roundness",
+      "Compactness",
+      "ShapeFactor1",
+      "ShapeFactor2",
+      "ShapeFactor3",
+      "ShapeFactor4"
+    ],
+    "input_features": 16,
+    "rows": 13611,
+    "sha256": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714"
+  },
+  "disk_estimate_csv": {
+    "all_20_splits_bytes": 135510651.6,
+    "all_20_splits_megabytes": 129.2330280303955,
+    "benchmark_csv_bytes": 103447,
+    "mean_bytes_per_mask_row": 103.388,
+    "note": "Projection covers compact per-mask scientific CSV fields only. Manifests, logs, partitions, and hashes add modest overhead.",
+    "one_split_bytes": 6775532.58,
+    "one_split_megabytes": 6.4616514015197755
+  },
+  "failures": [],
+  "full_enumeration_launched": false,
+  "gate_b_ready_for_decision": true,
+  "objective": {
+    "dimension": 16,
+    "inner_folds_per_mask": 3,
+    "inner_model_fits_all_20_splits": 3932100,
+    "inner_model_fits_per_split": 196605,
+    "nonempty_masks_per_split": 65535,
+    "penalty": 0.001,
+    "scorer": "frozen SubsetEvaluator from src/budgeted_search.py"
+  },
+  "phase": 11,
+  "projection_serial": {
+    "all_20_splits_hours": 87.20888684908226,
+    "all_20_splits_seconds": 313951.9926566961,
+    "one_split_hours": 4.360444342454113,
+    "one_split_seconds": 15697.599632834806
+  },
+  "resume_strategy": {
+    "atomic_partitions": true,
+    "partition_count_per_split": 16,
+    "partition_size": 4096,
+    "validation_before_commit": [
+      "expected contiguous mask range",
+      "no duplicate masks",
+      "no zero mask",
+      "finite fold scores/cv_macro_f1/fitness",
+      "selected_count equals mask cardinality",
+      "fitness formula reproduces"
+    ]
+  },
+  "runtime_environment": {
+    "logical_cpu_count": 4,
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "scikit_learn": "1.8.0",
+    "thread_environment": {
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "validation": {
+    "all_archived_scores_match": true,
+    "archived_masks_recomputed": 25,
+    "bit_mapping_roundtrip_passed": true,
+    "full_feature_mask_scored": true,
+    "max_abs_cv_macro_f1_difference": 0.0,
+    "max_abs_fitness_difference": 0.0,
+    "single_feature_masks_scored": 16
+  },
+  "work_package": "B"
+}

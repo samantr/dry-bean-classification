@@ -1,0 +1,120 @@
+{
+  "seed": 1001,
+  "total_masks": 65535,
+  "partition_size": 4096,
+  "partitions": [
+    {
+      "partition": 0,
+      "mask_start_inclusive": 1,
+      "mask_end_inclusive": 4096,
+      "mask_count": 4096,
+      "atomic_output_name": "part-000.csv"
+    },
+    {
+      "partition": 1,
+      "mask_start_inclusive": 4097,
+      "mask_end_inclusive": 8192,
+      "mask_count": 4096,
+      "atomic_output_name": "part-001.csv"
+    },
+    {
+      "partition": 2,
+      "mask_start_inclusive": 8193,
+      "mask_end_inclusive": 12288,
+      "mask_count": 4096,
+      "atomic_output_name": "part-002.csv"
+    },
+    {
+      "partition": 3,
+      "mask_start_inclusive": 12289,
+      "mask_end_inclusive": 16384,
+      "mask_count": 4096,
+      "atomic_output_name": "part-003.csv"
+    },
+    {
+      "partition": 4,
+      "mask_start_inclusive": 16385,
+      "mask_end_inclusive": 20480,
+      "mask_count": 4096,
+      "atomic_output_name": "part-004.csv"
+    },
+    {
+      "partition": 5,
+      "mask_start_inclusive": 20481,
+      "mask_end_inclusive": 24576,
+      "mask_count": 4096,
+      "atomic_output_name": "part-005.csv"
+    },
+    {
+      "partition": 6,
+      "mask_start_inclusive": 24577,
+      "mask_end_inclusive": 28672,
+      "mask_count": 4096,
+      "atomic_output_name": "part-006.csv"
+    },
+    {
+      "partition": 7,
+      "mask_start_inclusive": 28673,
+      "mask_end_inclusive": 32768,
+      "mask_count": 4096,
+      "atomic_output_name": "part-007.csv"
+    },
+    {
+      "partition": 8,
+      "mask_start_inclusive": 32769,
+      "mask_end_inclusive": 36864,
+      "mask_count": 4096,
+      "atomic_output_name": "part-008.csv"
+    },
+    {
+      "partition": 9,
+      "mask_start_inclusive": 36865,
+      "mask_end_inclusive": 40960,
+      "mask_count": 4096,
+      "atomic_output_name": "part-009.csv"
+    },
+    {
+      "partition": 10,
+      "mask_start_inclusive": 40961,
+      "mask_end_inclusive": 45056,
+      "mask_count": 4096,
+      "atomic_output_name": "part-010.csv"
+    },
+    {
+      "partition": 11,
+      "mask_start_inclusive": 45057,
+      "mask_end_inclusive": 49152,
+      "mask_count": 4096,
+      "atomic_output_name": "part-011.csv"
+    },
+    {
+      "partition": 12,
+      "mask_start_inclusive": 49153,
+      "mask_end_inclusive": 53248,
+      "mask_count": 4096,
+      "atomic_output_name": "part-012.csv"
+    },
+    {
+      "partition": 13,
+      "mask_start_inclusive": 53249,
+      "mask_end_inclusive": 57344,
+      "mask_count": 4096,
+      "atomic_output_name": "part-013.csv"
+    },
+    {
+      "partition": 14,
+      "mask_start_inclusive": 57345,
+      "mask_end_inclusive": 61440,
+      "mask_count": 4096,
+      "atomic_output_name": "part-014.csv"
+    },
+    {
+      "partition": 15,
+      "mask_start_inclusive": 61441,
+      "mask_end_inclusive": 65535,
+      "mask_count": 4095,
+      "atomic_output_name": "part-015.csv"
+    }
+  ],
+  "resume_rule": "Each partition is scored independently with the frozen SubsetEvaluator, written to a temporary file, validated for exact mask coverage/uniqueness/finite scores, then atomically renamed. Resume skips only validated final partition files. A split is exact only after all partitions pass and the merged mask set is exactly 1..65535."
+}
