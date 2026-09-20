@@ -1,0 +1,86 @@
+name: Phase 11 Exhaustive Feasibility Benchmark
+
+on:
+  push:
+    branches:
+      - revision/search-behaviour-exact-reference
+    paths:
+      - scripts/phase11_exhaustive_benchmark.py
+      - .github/workflows/phase11-exhaustive-benchmark.yml
+      - src/budgeted_search.py
+      - results/validation/stage3-final/checkpoints.tar.gz
+      - data/Dry_Bean_Dataset.xlsx
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen scientific dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            numpy==2.3.5 \
+            pandas==2.2.3 \
+            scipy==1.17.0 \
+            scikit-learn==1.8.0 \
+            openpyxl==3.1.5
+
+      - name: Run exact-score validation and 1,000-mask benchmark
+        id: benchmark
+        shell: bash
+        run: |
+          set +e
+          rm -rf results/validation/phase11-exhaustive-benchmark
+          python scripts/phase11_exhaustive_benchmark.py \
+            --dataset data/Dry_Bean_Dataset.xlsx \
+            --archive results/validation/stage3-final/checkpoints.tar.gz \
+            --output-dir results/validation/phase11-exhaustive-benchmark \
+            --seed 1001 \
+            --archive-method random_search \
+            --benchmark-masks 1000 \
+            --warmup-masks 32 \
+            --partition-size 4096
+          code=$?
+          echo "$code" > results/validation/phase11-exhaustive-benchmark/benchmark_exit_code.txt
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          cat results/validation/phase11-exhaustive-benchmark/EXHAUSTIVE_BENCHMARK_REPORT.md
+          exit 0
+
+      - name: Commit benchmark evidence
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/validation/phase11-exhaustive-benchmark
+          if git diff --cached --quiet; then
+            echo "No benchmark evidence changes to commit."
+          else
+            git commit -m "phase11: archive exhaustive feasibility benchmark"
+            git push
+          fi
+
+      - name: Fail workflow if exact-score validation failed
+        if: steps.benchmark.outputs.exit_code != '0'
+        run: |
+          echo "Exhaustive feasibility validation reported one or more failures."
+          exit 1
