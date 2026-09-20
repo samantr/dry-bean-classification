@@ -1,0 +1,68 @@
+{
+  "archive": {
+    "method_counts": {
+      "baseline": 20,
+      "ga_both": 20,
+      "ga_mutation_only": 20,
+      "ga_standard": 20,
+      "ga_tournament_only": 20,
+      "mi8": 20,
+      "nca6": 20,
+      "pca6": 20,
+      "random_search": 20,
+      "rfe8": 20
+    },
+    "path": "results/validation/stage3-final/checkpoints.tar.gz",
+    "result_units": 200,
+    "search_units": 100,
+    "sha256": "89d34ac8c590c1e52c2f1d93bc4a1061c421c91ea178d48ace1b8c06cb3a921f"
+  },
+  "checks": {
+    "all_outer_splits_reproduce_from_dataset_seed": true,
+    "all_result_hashes_match_statuses": true,
+    "all_search_histories_have_200_unique_nonempty_masks": true,
+    "all_unit_statuses_complete": true,
+    "cv_mean_matches_archived_fold_scores": true,
+    "dataset_hash_matches_manifest": true,
+    "deterministic_evaluation_order_recoverable": true,
+    "final_masks_traceable": true,
+    "fitness_formula_reproduces": true,
+    "inner_folds_reconstructed_from_frozen_seed_and_outer_training_order": true,
+    "same_initial_20_masks_across_search_methods_within_seed": true,
+    "same_outer_split_across_methods_within_seed": true,
+    "source_hashes_match_manifest": true
+  },
+  "failures": [],
+  "frozen_identity": {
+    "dataset_sha256_actual": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714",
+    "dataset_sha256_expected": "a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714",
+    "packages_archived": {
+      "numpy": "2.3.5",
+      "openpyxl": "3.1.5",
+      "pandas": "2.2.3",
+      "scikit-learn": "1.8.0",
+      "scipy": "1.17.0"
+    },
+    "platform_archived": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python_archived": "3.12.14",
+    "source_commit_execution_summary": "afab0d45a359ba5de7b798820d488a3698771e25",
+    "source_commit_expected": "afab0d45a359ba5de7b798820d488a3698771e25",
+    "thread_environment_archived": {
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "gate_a_passed": true,
+  "inner_fold_provenance_note": "Stage-3 result files archive per-candidate fold scores but not inner fold row indices. Exact inner folds are deterministically recoverable from the verified dataset, outer-training order, seed, frozen scikit-learn protocol, and source code. inner_fold_inventory.csv records reconstructed original-row digests for all 20 seeds.",
+  "phase": 11,
+  "static_source_audit": {
+    "basis": "Verified frozen source hashes plus source inspection: stage2.py calls budgeted_search(X_train, y_train, ...); budgeted_search.py constructs StratifiedKFold(3, shuffle=True, random_state=seed) and evaluates make_pipeline(StandardScaler(), LogisticRegression(...)) via cross_val_score.",
+    "outer_test_not_referenced_by_budgeted_search": true,
+    "scaling_is_inside_inner_cv_pipeline": true,
+    "search_receives_outer_training_only": true
+  },
+  "warnings": [],
+  "work_package": "A"
+}
