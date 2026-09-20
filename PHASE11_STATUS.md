@@ -1,22 +1,9 @@
 # PHASE11_STATUS
 
-Updated: 2026-09-20 16:27 TRT
-
-## Re-entry verification
-- Rechecked the authoritative source branch `revision/evaluation-audit`: head remains `6933c6eae7ec5e53f379c85e79fcd26567ad3cd3`.
-- Confirmed this working branch and status file already existed from the current Phase-11 work; no duplicate branch or audit was created.
-- Confirmed GitHub Actions run `35512271477` (`Phase 11 Trace Audit`) completed successfully, with archived provenance evidence committed on this branch.
-- User authorization for focused commits and pushes is reconfirmed in the current project conversation. No force-push or history rewrite is authorized or needed.
+Updated: 2026-09-20
 
 ## Phase
 Phase 11 — Search Behaviour and Exact Reference Extension
-
-## Current work package
-**Work packages C/D: checkpoint + frontier analysis — RUNNING on GitHub Actions**\n\n**Work package E: exact-reference enumeration — RUNNING on GitHub Actions**
-
-**Gate A: PASSED.** Ordered evaluation identity, mask identity, archived fitness, outer-split identity, deterministically reconstructed inner-fold identity, method identity, and final selected mask are recoverable for every analyzed search trace.
-
-**Gate B: PASSED.** Exact-score reproduction, bit mapping, serial and safe 4-process benchmarks, disk estimate, and atomic resume strategy are all recorded. Full exact enumeration completed successfully across all 20 frozen splits.
 
 ## Repository state
 - Repository: `samantr/dry-bean-classification`
@@ -24,146 +11,96 @@ Phase 11 — Search Behaviour and Exact Reference Extension
 - Verified source-branch head at Phase-11 start: `6933c6eae7ec5e53f379c85e79fcd26567ad3cd3`
 - Working branch: `revision/search-behaviour-exact-reference`
 - Frozen Stage-3 execution source commit: `afab0d45a359ba5de7b798820d488a3698771e25`
-- Latest completed GitHub Actions provenance-evidence commit before this status update: `71d8f019191b8ef4ae2ca29c927808d296ddaa78`
-- Root `AGENTS.md`: not present at the inspected source ref
-- Repository code search for `AGENTS.md`: no result
-- History policy: no force-push, no history rewrite, no silent experimental changes
+- Frozen dataset SHA256: `a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714`
+- Frozen checkpoint archive SHA256: `89d34ac8c590c1e52c2f1d93bc4a1061c421c91ea178d48ace1b8c06cb3a921f`
+- No force-push or history rewrite has been used.
 
-## Authoritative scientific baseline
-- Frozen Stage-3 experiment remains immutable evidence.
-- Manuscript baseline is the latest revised LaTeX submission package supplied with the project handoff; historical R4 five-seed results must not enter the revised study.
-- The Phase-11 instruction file mentions a `_v2` package name, while the project handoff identifies the uploaded `dry_bean_tubitak_revision_submission_package.zip` as the latest authoritative package. The handoff/package contents are used as the manuscript baseline; the filename discrepancy is documented rather than guessed away.
+## Scientific baseline
+- Historical R4 five-seed results are superseded and must not be mixed into this study.
 - Frozen outer seeds: 1001–1020.
 - Search objective: mean inner 3-fold macro-F1 minus `0.001 * |S| / 16`.
-- Primary search budget: 200 **unique nonempty subset evaluations** per seed-method pair.
-- Outer test data must not participate in subset search, checkpoint choice, frontier construction, or exact-objective optimization.
-- Exhaustive search, if later approved by Gate B, is an exact reference for the frozen objective and not a 200-evaluation competitor.
+- Equal search budget: 200 distinct nonempty subset evaluations per seed-method pair.
+- The first 20 subset masks are identical across random search and all four GA configurations within each seed.
+- Outer test data are excluded from subset search, checkpoint choice, frontier construction, and exact-objective optimization.
+- Exact exhaustive enumeration is an attainable-objective reference, not a 200-evaluation competitor.
 
-## Work package A audit checklist
+## Work-package status
+- **A — Trace and provenance audit: COMPLETE / Gate A PASSED.**
+  - All 100 stochastic search traces have 200 unique nonzero masks and recoverable evaluation order.
+  - Outer splits, deterministic inner folds, frozen fitness, final masks, and source/data hashes are verified.
+- **B — Exhaustive-search feasibility: COMPLETE / Gate B PASSED.**
+  - Archived score reproduction max difference: `0.000e+00`.
+  - 4-process exact benchmark reproduced serial scores exactly.
+- **C/D — Checkpoints and training-only performance-cardinality frontier: COMPLETE / VALIDATED.**
+  - GitHub Actions run `35514011863`: SUCCESS.
+  - Checkpoints: 20, 50, 100, 150, 200 unique evaluations.
+  - Budget-200 metrics/predictions reproduce frozen Stage 3.
+- **E — Exact reference: COMPLETE / VALIDATED.**
+  - GitHub Actions run `35513927921`: SUCCESS.
+  - 20/20 outer-training splits × 65,535 nonempty masks = 1,310,700 subset objectives.
+  - Total inner logistic-regression fits: 3,932,100.
+  - Heavy per-mask archives remain as GitHub Actions artifacts; compact summaries/hashes are committed.
+- **F — Regret and attainment: COMPLETE / VALIDATED.**
+  - GitHub Actions run `35525796410`: SUCCESS; validation failures: none.
+- **G — Interpretation gate: COMPLETE.**
+  - Classification: Outcome 3 for the frozen search objective. GA configurations generally reduce exact-objective regret relative to equal-budget random search; downstream outer predictive differences remain small and classifier-dependent.
 
-### A1. Evidence inventory
-- [x] Located Stage-3 search traces in `results/validation/stage3-final/checkpoints.tar.gz`.
-- [x] Located manifests/completion records for 180 core units and 20 NCA units.
-- [x] Located final selected masks and selected feature indices/names.
-- [x] Located cached unique-evaluation histories and per-candidate fitness/fold scores.
-- [x] Located archived outer train/test row indices and prediction arrays.
-- [x] Reconstructed exact inner fold original-row identities from the verified dataset, outer-training order, seed, frozen source, and scikit-learn protocol; stored digests in `inner_fold_inventory.csv`.
-- [x] Located Stage-3 analysis files and frozen source revision.
-- [x] Located authoritative configuration/environment manifests.
-- [x] Recorded hashes and unit-level provenance in the Phase-11 audit outputs.
+## Key frozen Phase-11 result
+At budget 200, mean exact-objective regret is:
+- random search: 0.0006632;
+- GA standard: 0.0002305;
+- GA mutation-only: 0.0002325;
+- GA tournament-only: 0.0001450;
+- GA both: 0.0002238.
 
-### A2. Per seed-method provenance checks
-For all 100 search units:
-- [x] exactly 200 distinct nonempty masks;
-- [x] deterministic evaluation order 1–200 recoverable;
-- [x] same initial sequence of 20 masks across the five search methods within every seed;
-- [x] same outer row indices across all methods within every seed;
-- [x] deterministic inner folds recoverable for every seed;
-- [x] fitness reproduces as mean inner macro-F1 minus `0.001 * |S| / 16`;
-- [x] archived `cv_macro_f1` reproduces from the three fold scores;
-- [x] scaling is fitted inside each inner CV training pipeline;
-- [x] no outer-test value is used by `budgeted_search`;
-- [x] final selected mask is traceable to the evaluated history and selected-feature mapping.
+Paired against random search at budget 200, lower regret occurs on:
+- GA standard: 20/20 splits;
+- GA mutation-only: 19/20;
+- GA tournament-only: 20/20;
+- GA both: 18/20.
 
-### A3. Claim-to-evidence mapping
-- [x] Built `results/validation/phase11-audit/CLAIM_TO_EVIDENCE.md`.
-- [x] Checked current manuscript numerical results against frozen Stage-3 summaries/analysis.
-- [x] Distinguished inner CV macro-F1, penalized fitness, outer-test macro-F1, retained original inputs, transformed dimensions, search/representation time, and downstream fit time.
-- [x] Verified the supplied revised package's performance/trade-off summary CSV values against frozen Stage-3 evidence.
-- [x] Flagged two metric-attribution wording defects for later manuscript correction.
+Exact-optimum attainment at budget 200:
+- random search: 0/20;
+- GA standard: 4/20;
+- GA mutation-only: 1/20;
+- GA tournament-only: 6/20;
+- GA both: 4/20.
 
-## Work package A evidence
-- `results/validation/phase11-audit/TRACE_AUDIT_REPORT.md`
-- `results/validation/phase11-audit/trace_audit_summary.json`
-- `results/validation/phase11-audit/trace_inventory.csv`
-- `results/validation/phase11-audit/inner_fold_inventory.csv`
-- `results/validation/phase11-audit/source_hash_audit.csv`
-- `results/validation/phase11-audit/CLAIM_TO_EVIDENCE.md`
+All four GA variants are within 0.001 exact-objective regret on all 20 splits at budget 200; random search is within 0.001 on 17/20.
 
-Checkpoint archive SHA256:
-`89d34ac8c590c1e52c2f1d93bc4a1061c421c91ea178d48ace1b8c06cb3a921f`
+## Interpretation boundary
+The paper may state that the tested GA configurations, particularly tournament-only selection in this experiment, approached the frozen training-only objective more efficiently than equal-budget random search. It must not convert this into a claim of a large, general, or classifier-independent predictive advantage. Repeated holdouts are dependent and are used for descriptive split-sensitivity analysis rather than independent-dataset inference.
 
-Frozen dataset SHA256:
-`a9efa69741c6c5d95167c962a13da23a456f7e940402a5add12639790e01f714`
+## Manuscript revision status
+- Latest revised LaTeX manuscript has been rewritten around frozen Phase-11 evidence.
+- The earlier metric-attribution defect has been corrected: +0.00025 and +0.00057 are paired **outer-test logistic-regression macro-F1** differences, not search-objective differences.
+- Current compiled anonymous main manuscript: 12 pages, 249-word abstract, 5 keywords, 4 tables, 3 figures, 13 references.
+- Separate title page is compiled separately.
+- Anonymous-main identity scan passed: no author names, affiliations, institutional name, identifying repository URL, or author PDF metadata.
+- References use full journal names according to the current journal website.
+- All PDFs were rebuilt, preflighted, rendered, and visually inspected after the final text/figure update.
+- Figures were generated programmatically from frozen numeric CSVs; no generative-AI image creation/modification was used.
+- Current figure PDFs embed Tinos CID TrueType; genuine Times New Roman is still required for strict compliance with the live figure-font instruction.
 
-## Verified findings
-- 200 archived Stage-3 result units are present: 180 core plus 20 NCA, all complete.
-- All archived result SHA256 values match unit-status records.
-- The 100 stochastic-search units each contain 200 unique nonzero masks and 600 inner model fits.
-- Every seed uses an identical initial 20-mask sequence across random search and the four GA variants.
-- Every method within a seed uses the identical archived outer split.
-- The frozen source and dataset hashes match the Stage-3 manifests.
-- Dataset profile from the frozen file: 13,611 rows, 16 input descriptors, 7 classes; class counts BARBUNYA 1322, BOMBAY 522, CALI 1630, DERMASON 3546, HOROZ 1928, SEKER 2027, SIRA 2636.
-- No Stage-3 rerun is required for provenance or checkpoint reconstruction.
+## Live journal-policy audit
+Rechecked on 2026-09-20:
+- journal operates double-blind review;
+- initial research manuscripts are limited to 15 pages;
+- research abstract limit is 300 words;
+- research articles may have no more than 10 figures/tables combined;
+- separate title page is required;
+- current website says journal titles should not be abbreviated;
+- current generative-AI policy requires full disclosure and author accountability and prohibits generative-AI image creation/modification.
 
-## Manuscript issues discovered by the audit
-1. In the abstract, the values +0.00025 and +0.00057 are described as being “under the search objective.” These are actually paired **outer-test logistic-regression macro-F1** differences after selection, not inner CV objective/fitness differences.
-2. The Discussion contains the same attribution risk when describing the GA-vs-random LR paired differences as being under the logistic-regression objective.
+Documented conflicts:
+1. the live Information for Authors page contains a generic “MS Word only” sentence but later explicitly and repeatedly requires the journal template and LaTeX submission;
+2. the supplied template contains older reference-abbreviation wording while the current website explicitly requires full journal names.
 
-These are wording/provenance defects, not numerical-result failures. They must be corrected when the manuscript is revised after the new Phase-11 evidence is frozen.
+## Remaining blockers before submission
+1. Final independent human scientific review, meaningful revision/adoption, and approval by both authors.
+2. Re-export figures with genuine/licensed Times New Roman.
+3. Confirm Editorial Manager upload slots/file types at submission time because of the Word-vs-LaTeX website contradiction.
+4. Confirm double-blind handling of the public code/audit repository and any reviewer-facing supplemental files.
+5. Ensure CRediT entries in the portal match the title-page statement and are approved by both authors.
 
-## Commands/actions executed
-1. Located and verified `revision/evaluation-audit`.
-2. Confirmed `6933c6e...` as the exact Phase-11 source-branch head.
-3. Created `revision/search-behaviour-exact-reference`.
-4. Created this durable status file immediately.
-5. Located the frozen Stage-3 source commit `afab0d45...` from the execution summary.
-6. Added `scripts/phase11_trace_audit.py`.
-7. Added `.github/workflows/phase11-trace-audit.yml`.
-8. Ran the audit on GitHub Actions with the frozen dependency versions.
-9. Archived the generated evidence in the repository.
-10. Extended the audit to record the frozen dataset profile and reran it successfully.
-11. Built the manuscript claim-to-evidence map.
-
-
-
-## Work package B evidence and decision
-- GitHub Actions run `35512547614` — Phase 11 Exhaustive Feasibility Benchmark: **SUCCESS**.
-- GitHub Actions run `35512856869` — Phase 11 Parallel Exact Benchmark: **SUCCESS**.
-- Recomputed 25 archived Stage-3 masks with maximum absolute CV macro-F1 difference `0.000e+00` and fitness difference `0.000e+00`.
-- Validated all 16 single-feature masks and the full-feature mask; bit-to-feature mapping round trip passed.
-- Serial benchmark: 1,000 uncached masks in 239.53 s; projected 4.36 h per split and 87.21 h for all 20 splits.
-- Safe 4-process benchmark: 1,000 masks in 87.09 s with maximum absolute difference versus serial `0.000e+00`; projected 1.59 h per split and 31.71 aggregate runner-hours for 20 splits.
-- Compact scientific CSV projection: about 6.5 MiB per split and 129.2 MiB for all 20 splits, before logs/manifests.
-- Resume strategy: deterministic contiguous mask partitions, temporary writes followed by validation and atomic rename; a split is exact only if masks 1..65,535 are complete, unique, finite, and failure-free.
-- Decision: Gate B passes. Use GitHub Actions for the exact runs, preserve per-mask outputs as workflow artifacts, and commit only compact summaries/manifests/hashes unless repository-size policy is explicitly changed.
-
-
-
-
-
-
-## Completed C/D/E runs
-- Run `35514011863` — Phase 11 Checkpoint Frontier: **SUCCESS**. Validation failures: none. Budget-200 outer metrics/predictions reproduce frozen Stage 3.
-- Run `35513927921` — Phase 11 Exact Enumeration: **SUCCESS**. All 20 seed jobs and the aggregate job succeeded.
-- Exact coverage: 20/20 splits × 65,535 nonempty masks = 1,310,700 subset objectives and 3,932,100 inner logistic-regression fits.
-- Outer test data used during exact search: **NO**.
-- All 20 per-seed heavy archives are retained as GitHub Actions artifacts; compact optima/cardinality summaries and artifact hashes are committed at `results/validation/phase11-exact-reference/`.
-
-## Work package F definitions frozen before F computation
-- Exact-optimum attainment tolerance: absolute objective regret <= `1e-12`.
-- Descriptive near-optimum regret thresholds: `0.001` and `0.005`. These values are inherited from the already-frozen Phase-11 absolute score tolerances used in Work Package D; no new threshold will be tuned after the regret results are computed.
-- Objective regret: exact optimal frozen fitness minus checkpoint best frozen fitness.
-- Matched-cardinality inner macro-F1 regret: exact best inner macro-F1 at the selected cardinality minus checkpoint inner macro-F1.
-- GA-vs-random summaries: paired by outer seed and budget; lower regret is a win, absolute paired difference <= `1e-12` is a tie.
-- Repeated holdouts remain dependent; summaries are descriptive and will not be treated as independent datasets.
-
-
-
-## Work package F result and Work package G classification
-- GitHub Actions run `35525796410` — Phase 11 Regret Attainment: **SUCCESS**; validation failures: none.
-- At budget 200, mean exact-objective regret is 0.0006632 for random search versus 0.0002305 (GA standard), 0.0002325 (mutation-only), 0.0001450 (tournament-only), and 0.0002238 (both).
-- At budget 200, lower regret versus random occurs on 20/20 splits for GA standard, 19/20 for mutation-only, 20/20 for tournament-only, and 18/20 for both.
-- Exact-optimum attainment at budget 200: random 0/20; GA standard 4/20; mutation-only 1/20; tournament-only 6/20; both 4/20.
-- All GA variants are within 0.001 exact-objective regret on 20/20 splits at budget 200; random search is within 0.001 on 17/20.
-- Work package G classification: **Outcome 3 for the frozen search objective**. GA more consistently reduces regret under the tested budgets, especially tournament-only selection. However, downstream outer-test predictive differences remain small and classifier-dependent.
-- The manuscript must therefore emphasize search efficiency / proximity to the exact frozen objective, not a large predictive-performance gain or general superiority of GA.
-
-## Missing or unresolved
-- Work packages C/D checkpoint and frontier outputs do not yet exist.
-- Full exact-reference enumeration has not yet been launched.
-- Current manuscript wording defects identified above are intentionally not edited until the new Phase-11 evidence is frozen.
-- Journal formatting/policy issues from the handoff remain separate later-stage tasks.
-
-## Next action
-Begin **Work packages C/D** from the frozen Stage-3 traces and launch **Work package E exact enumeration** on GitHub Actions using the Gate-B-validated 4-process scoring path. Keep all selection and frontier construction training-only. Store heavy per-mask exact outputs as Actions artifacts and commit compact summaries, manifests, and hashes.
+No manuscript has been submitted and no journal/editor has been contacted.
