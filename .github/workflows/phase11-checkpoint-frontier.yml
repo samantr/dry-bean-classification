@@ -1,0 +1,80 @@
+name: Phase 11 Checkpoint Frontier
+
+on:
+  push:
+    branches:
+      - revision/search-behaviour-exact-reference
+    paths:
+      - scripts/phase11_checkpoint_frontier.py
+      - .github/workflows/phase11-checkpoint-frontier.yml
+      - src/baseline_models.py
+      - src/budgeted_search.py
+      - results/validation/stage3-final/checkpoints.tar.gz
+      - data/Dry_Bean_Dataset.xlsx
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen scientific dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            numpy==2.3.5 \
+            pandas==2.2.3 \
+            scipy==1.17.0 \
+            scikit-learn==1.8.0 \
+            openpyxl==3.1.5
+
+      - name: Run checkpoint and frontier analysis
+        id: analysis
+        shell: bash
+        run: |
+          set +e
+          rm -rf results/validation/phase11-checkpoint-frontier
+          python scripts/phase11_checkpoint_frontier.py \
+            --dataset data/Dry_Bean_Dataset.xlsx \
+            --archive results/validation/stage3-final/checkpoints.tar.gz \
+            --output-dir results/validation/phase11-checkpoint-frontier \
+            --workers 4
+          code=$?
+          echo "$code" > results/validation/phase11-checkpoint-frontier/analysis_exit_code.txt
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          cat results/validation/phase11-checkpoint-frontier/CHECKPOINT_FRONTIER_REPORT.md
+          exit 0
+
+      - name: Commit verified C/D evidence
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin revision/search-behaviour-exact-reference
+          git add results/validation/phase11-checkpoint-frontier
+          if git diff --cached --quiet; then
+            echo "No checkpoint/frontier evidence changes to commit."
+          else
+            git commit -m "phase11: archive checkpoint and frontier evidence"
+            git push
+          fi
+
+      - name: Fail workflow if validation failed
+        if: steps.analysis.outputs.exit_code != '0'
+        run: exit 1
